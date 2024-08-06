@@ -1,0 +1,5 @@
+# ignore extracted game files, we will add them in actions
+extracted
+
+# ignore the python script for .ogg to wav 41000 hz conv
+*.py
