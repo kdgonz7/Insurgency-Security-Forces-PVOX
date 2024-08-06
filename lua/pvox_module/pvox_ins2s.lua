@@ -21,6 +21,7 @@ end
 
 if CLIENT then
     local DoLowCallout = CreateConVar("pvox_ins2_yellwhenlow", 1, FCVAR_ARCHIVE)
+    local DoLowCalloutAlways = CreateConVar("pvox_ins2_autoyell", 0, FCVAR_ARCHIVE)
     local AmmoThresh = CreateConVar("pvox_ins2_ammothresh", 1, FCVAR_ARCHIVE)  
 
     hook.Add("KeyPress", "INS2_PV_EnsureAmmo", function(ply, key)
@@ -36,20 +37,22 @@ if CLIENT then
         if key == IN_RELOAD and ply:GetAmmoCount(pt) == 0 then
             net.Start("INS2_PV_LowAmmoCallout")
             net.SendToServer()
-        end
+        else
+            if key == IN_ATTACK or DoLowCalloutAlways:GetBool() then
+                timer.Simple(0.1, function()
+                    if ! IsValid(ply) then return end
+                    ac = ply:GetActiveWeapon()
 
-        timer.Simple(0.1, function()
-            if ! IsValid(ply) then return end
-            ac = ply:GetActiveWeapon()
+                    if ! IsValid(ac) then return end
+                    local new = ac:Clip1()
 
-            if ! IsValid(ac) then return end
-            local new = ac:Clip1()
-
-            if (new <= AmmoThresh:GetInt()) then
-                net.Start("INS2_PV_LowAmmoCallout")
-                net.SendToServer()
+                    if (new <= AmmoThresh:GetInt()) then
+                        net.Start("INS2_PV_LowAmmoCallout")
+                        net.SendToServer()
+                    end
+                end)
             end
-        end)
+        end
     end)
 end
 
