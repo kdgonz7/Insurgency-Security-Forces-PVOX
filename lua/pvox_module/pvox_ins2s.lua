@@ -25,6 +25,7 @@ if CLIENT then
 
     hook.Add("KeyPress", "INS2_PV_EnsureAmmo", function(ply, key)
         if ! ply:IsValid()      then return end
+        if ! DoLowCallout:GetBool() then return end
 
         local ac = ply:GetActiveWeapon()
         if ! IsValid(ac) then return end
