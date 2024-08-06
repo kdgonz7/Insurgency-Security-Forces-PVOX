@@ -57,3 +57,6 @@ if CLIENT then
 end
 
 PVox:ImplementModule("ins2-security", function(_) return true end)
+PVox:RegisterPlayerModel("models/player/ins_security_heavy.mdl", "ins2-security")
+PVox:RegisterPlayerModel("models/player/ins_security_light.mdl", "ins2-security")
+PVox:RegisterPlayerModel("models/player/ins_security_standard.mdl", "ins2-security")
